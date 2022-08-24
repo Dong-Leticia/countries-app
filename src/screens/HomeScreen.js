@@ -1,34 +1,40 @@
-import React,{useEffect,useState} from "react";
+import React from 'react'
+import products from '../datasource/product'
 
-export default function HomeScreen() {
-    const [countries,setCountries] = useState([]);
-    const [isPending,setIsPending] = useState(false);
+function HomeScreen() {
+  return (
+    <div className='products'>
+       <div className='firstrow'>
+       <div className='card'>
+       <h2>Quality phones</h2>
+        <div style={{
+            display:"grid",
+            gridTemplateColumns:"1fr 1fr 1fr 1fr",
+            maxWidth:"90%",
+            margin:"20px auto"
+        }}>
+        {
+        products.map(product=>(
+            <div style={{
+                display:"flex",
+                flexDirection:"column",
+                justifyContent:"center",
+                border:"1px solid #dedede",
+                padding:"10px",
+                margin:"10px"
+            }}>
+            <img src={product.image} alt="" height={"230px"}/>
+            <h5>{product.name}</h5>
+            <h5>GH₵{product.price.toFixed(2)}</h5>
+            </div>
+        ))
+        }
+        </div>
+       </div>
 
-    useEffect(() => {
-        setIsPending(true);
-        fetch("https://restcountries.com/v3.1/all")
-        .then((res) => res.json())
-        .then((data) => {
-            setCountries(data)
+       </div>
+    </div>
+  )
+}
 
-})
-       .catch((err) => console.log("error:",err))
-        .finally(() => {
-            setIsPending(false)
-        });
-    },[]);
-    
-    if(isPending) return <h1>Loading...</h1>
-    return (
-      <div>
-        {countries.map((country) => (
-          <div className="card">
-            <img src={country.flags.png} alt={country.name.common} />
-            <h5>{country.name.common}</h5>
-
-          </div>
-        ))}
-      </div>
-       );
-     } 
-
+export default HomeScreen
